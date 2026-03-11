@@ -12,7 +12,6 @@ public class DicePairTest {
         DicePair dicePair = new DicePair();
         int actual = dicePair.roll();
 
-        assertTrue("dice pair roll should be between 2 and 12 inclusive",
-                actual >= 2 && actual <= 12);
+        assertTrue("dice pair roll should be between 2 and 12 inclusive", actual >= 2 && actual <= 12);
     }
 }

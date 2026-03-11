@@ -5,7 +5,7 @@ import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
-public class GetResourceTest {
+public class TileTest {
 
     private static final int DEFAULT_TIMEOUT = 1000;
     private Tile makeTile(Terrain terrain) {
