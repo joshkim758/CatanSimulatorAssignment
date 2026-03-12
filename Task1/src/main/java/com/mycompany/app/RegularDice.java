@@ -11,10 +11,18 @@ package com.mycompany.app;
 import java.util.Random;
 
 public class RegularDice implements Dice {
-	private Random rand = new Random();
+    private final Random rand;
 
-	@Override
-	public int roll() {
-		return rand.nextInt(6) + 1; // 1-6
-	}
+    public RegularDice() {
+        this(new Random());
+    }
+
+    public RegularDice(Random rand) {
+        this.rand = rand;
+    }
+
+    @Override
+    public int roll() {
+        return rand.nextInt(6) + 1;
+    }
 }

@@ -57,7 +57,7 @@ public class Game {
         return turns.stage();
     }
 
-    
+
     public Player[] players() {
         return players.clone();
     }
@@ -279,6 +279,8 @@ public class Game {
         return true;
     }
 
+    //resource production method
+	//distribute resources to players for a given dice roll depending on the players current settlement/city positions
     public void distributeResources(int roll) {
         for (Tile tile : board.getTiles()) {
             if (tile.getNumber() == null || tile.getNumber() != roll || tile.getTerrain() == Terrain.DESERT) {
@@ -302,6 +304,7 @@ public class Game {
             }
         }
     }
+
 
     public void resolveRobber(Player roller) {
         for (Player player : players) {
@@ -364,6 +367,8 @@ public class Game {
         }
         return buildRoad(player, edge.getId());
     }
+
+
 
     public boolean buildSettlement(Player player, int nodeId) {
         if (phase() != Phase.MAIN || stage() != TurnStage.ACTIONS) {
