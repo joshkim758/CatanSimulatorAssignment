@@ -1,0 +1,1 @@
+SonarQube Standard Badge (Markdown): [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=joshkim758_2AA4-Assignment2&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=joshkim758_2AA4-Assignment2)
