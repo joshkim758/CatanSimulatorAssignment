@@ -328,6 +328,7 @@ public class Game {
             }
         }
 
+
         if (victims.isEmpty()) {
             log(roller, "Could not steal a card from anyone.");
             return;
@@ -418,13 +419,7 @@ public class Game {
     GameSnapshot.PlayerState[] playerStates = new GameSnapshot.PlayerState[players.length];
     for (int i = 0; i < players.length; i++) {
         Player player = players[i];
-        playerStates[i] = new GameSnapshot.PlayerState(
-                player.handSummary(),
-                player.getRoadsLeft(),
-                player.getSettlementsLeft(),
-                player.getCitiesLeft(),
-                player.vp()
-        );
+        playerStates[i] = new GameSnapshot.PlayerState(player.handSummary(), player.getRoadsLeft(), player.getSettlementsLeft(), player.getCitiesLeft(), player.vp());
     }
 
     Node[] boardNodes = board.getNodes();
@@ -459,26 +454,17 @@ public void restoreSnapshot(GameSnapshot snapshot) {
     GameSnapshot.PlayerState[] playerStates = snapshot.playerStates();
     for (int i = 0; i < players.length; i++) {
         GameSnapshot.PlayerState state = playerStates[i];
-        players[i].restoreState(
-                state.hand(),
-                state.roadsLeft(),
-                state.settlementsLeft(),
-                state.citiesLeft(),
-                state.victoryPoints()
-        );
+        players[i].restoreState(state.hand(), state.roadsLeft(), state.settlementsLeft(), state.citiesLeft(), state.victoryPoints());
     }
 
     bank.restoreCounts(snapshot.bankCounts());
-    board.restoreState(
-            snapshot.nodeOwners(),
-            snapshot.nodeBuildings(),
-            snapshot.edgeOwners(),
-            snapshot.robberTileId()
-    );
+    board.restoreState(snapshot.nodeOwners(), snapshot.nodeBuildings(), snapshot.edgeOwners(), snapshot.robberTileId());
     turns.restoreState(snapshot.currentPlayerIndex(), snapshot.phase(), snapshot.stage());
     turnId = snapshot.turnId();
 }
     
+
+
     public void writeGameState() {
         if (stateWriter != null) {
             stateWriter.write(this);
