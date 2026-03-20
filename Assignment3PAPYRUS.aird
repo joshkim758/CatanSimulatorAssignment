@@ -10,7 +10,9 @@
   <semanticResources>pathmap://Codegen_PROFILES/Codegen.profile.uml</semanticResources>
   <semanticResources>pathmap://Codegen_PROFILES/languages.notation</semanticResources>
   <semanticResources>pathmap://Codegen_PROFILES/languages.di</semanticResources>
-  <semanticResources>Assignment1PAPYRUS.uml</semanticResources>
+  <semanticResources>Assignment3PAPYRUS.uml</semanticResources>
+  <semanticResources>Assignment3PAPYRUS.uml</semanticResources>
+  <semanticResources>pathmap://PAPYRUS_ACTIONLANGUAGE_PROFILE/ActionLanguage-Profile.profile.uml</semanticResources>
   <ownedViews xmi:type="viewpoint:DView" uid="_gGcMYB2MEfGS2qx77P6YCQ">
     <viewpoint xmi:type="description:Viewpoint" href="platform:/plugin/org.eclipse.papyrus.sirius.uml.diagram.communication/description/papyrus_communication.odesign#//@ownedViewpoints[name='CommunicationDiagram']"/>
   </ownedViews>
