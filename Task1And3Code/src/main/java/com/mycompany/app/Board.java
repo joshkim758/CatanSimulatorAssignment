@@ -216,6 +216,95 @@ public class Board {
         node(nodeId).setBuilding(playerId, BuildingType.CITY);
     }
 
+
+    public int findRoadConnectionEdge(int playerId) {
+        for (Edge edge : edges) {
+            if (!canPlaceRoad(playerId, edge.getId())) {
+                continue;
+            }
+
+            int a = edge.getEndpoint1();
+            int b = edge.getEndpoint2();
+            if (hasConnectingRoadAtNode(a, playerId) && hasConnectingRoadAtNode(b, playerId)) {
+                return edge.getId();
+            }
+            if (hasConnectingRoadAtNode(a, playerId) && hasRoadTwoStepsAway(playerId, b, edge.getId())) {
+                return edge.getId();
+            }
+            if (hasConnectingRoadAtNode(b, playerId) && hasRoadTwoStepsAway(playerId, a, edge.getId())) {
+                return edge.getId();
+            }
+        }
+        return -1;
+    }
+
+    public int firstConnectedRoadEdge(int playerId) {
+        for (Edge edge : edges) {
+            if (canPlaceRoad(playerId, edge.getId())) {
+                return edge.getId();
+            }
+        }
+        return -1;
+    }
+
+    public int longestRoadLength(int playerId) {
+        int best = 0;
+        for (Edge edge : edges) {
+            if (edge.getRoadOwner() != playerId) {
+                continue;
+            }
+
+            boolean[] used = new boolean[edges.size()];
+            used[edge.getId()] = true;
+            best = Math.max(best, 1 + longestRoadFromNode(edge.getEndpoint1(), playerId, used));
+            best = Math.max(best, 1 + longestRoadFromNode(edge.getEndpoint2(), playerId, used));
+        }
+        return best;
+    }
+
+    private boolean hasRoadTwoStepsAway(int playerId, int viaNodeId, int firstEdgeId) {
+        if (endpointBlockedForRoadExtension(viaNodeId, playerId)) {
+            return false;
+        }
+
+        for (Edge edge : edges) {
+            if (edge.getId() == firstEdgeId || !edge.empty()) {
+                continue;
+            }
+            if (edge.getEndpoint1() != viaNodeId && edge.getEndpoint2() != viaNodeId) {
+                continue;
+            }
+
+            int otherNodeId = edge.getEndpoint1() == viaNodeId ? edge.getEndpoint2() : edge.getEndpoint1();
+            if (hasConnectingRoadAtNode(otherNodeId, playerId)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private int longestRoadFromNode(int nodeId, int playerId, boolean[] used) {
+        if (endpointBlockedForRoadExtension(nodeId, playerId)) {
+            return 0;
+        }
+
+        int best = 0;
+        for (Edge edge : edges) {
+            if (edge.getRoadOwner() != playerId || used[edge.getId()]) {
+                continue;
+            }
+            if (edge.getEndpoint1() != nodeId && edge.getEndpoint2() != nodeId) {
+                continue;
+            }
+
+            used[edge.getId()] = true;
+            int otherNodeId = edge.getEndpoint1() == nodeId ? edge.getEndpoint2() : edge.getEndpoint1();
+            best = Math.max(best, 1 + longestRoadFromNode(otherNodeId, playerId, used));
+            used[edge.getId()] = false;
+        }
+        return best;
+    }
+
     //restore state for undo/redo functionality
     public void restoreState(int[] nodeOwners, BuildingType[] nodeBuildings, int[] edgeOwners, int robberTileId) {
         for (int i = 0; i < nodes.length; i++) {
