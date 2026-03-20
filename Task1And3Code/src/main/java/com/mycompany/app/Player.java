@@ -147,4 +147,17 @@ public class Player {
     public void setCitiesLeft(int citiesLeft) {
         this.citiesLeft = citiesLeft;
     }
+
+
+    //restore player state after undo
+    public void restoreState(Map<Resource, Integer> handState, int roadsLeft, int settlementsLeft, int citiesLeft, int victoryPoints) {
+        hand.clear();
+        for (Resource resource : Resource.values()) {
+            hand.put(resource, handState.getOrDefault(resource, 0));
+        }
+        this.roadsLeft = roadsLeft;
+        this.settlementsLeft = settlementsLeft;
+        this.citiesLeft = citiesLeft;
+        this.victoryPoints = victoryPoints;
+    }
 }

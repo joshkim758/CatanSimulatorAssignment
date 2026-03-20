@@ -216,6 +216,17 @@ public class Board {
         node(nodeId).setBuilding(playerId, BuildingType.CITY);
     }
 
+    //restore state for undo/redo functionality
+    public void restoreState(int[] nodeOwners, BuildingType[] nodeBuildings, int[] edgeOwners, int robberTileId) {
+        for (int i = 0; i < nodes.length; i++) {
+            nodes[i].setState(nodeOwners[i], nodeBuildings[i]);
+        }
+        for (int i = 0; i < edges.size(); i++) {
+            edges.get(i).setRoadOwner(edgeOwners[i]);
+        }
+        this.robberTileId = robberTileId;
+    }
+    
     public Node[] getNodes() {
         return nodes.clone();
     }

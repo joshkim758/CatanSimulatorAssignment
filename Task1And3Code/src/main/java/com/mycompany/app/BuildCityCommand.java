@@ -3,7 +3,7 @@
 // --------------------------------------------------------
 package com.mycompany.app;
 
-public class BuildCityCommand implements HumanCommand {
+public class BuildCityCommand extends AbstractUndoableCommand {
     private final int nodeId;
 
     public BuildCityCommand(int nodeId) {
@@ -15,7 +15,7 @@ public class BuildCityCommand implements HumanCommand {
     }
 
     @Override
-    public boolean execute(Game game, Player player) {
+    protected boolean executeCommand(Game game, Player player) {
         if (game.phase() == Phase.SETUP) {
             game.systemMessage("Cities cannot be built during setup.");
             return false;

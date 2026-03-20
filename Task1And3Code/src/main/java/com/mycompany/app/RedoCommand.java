@@ -3,10 +3,16 @@
 // --------------------------------------------------------
 package com.mycompany.app;
 
-public class RollCommand extends AbstractUndoableCommand {
+public class RedoCommand implements HumanCommand {
+    private final CommandHistory history;
+
+    public RedoCommand(CommandHistory history) {
+        this.history = history;
+    }
+
     @Override
-    protected boolean executeCommand(Game game, Player player) {
-        return game.performRoll(player);
+    public boolean execute(Game game, Player player) {
+        return history.redo(game);
     }
 
     @Override

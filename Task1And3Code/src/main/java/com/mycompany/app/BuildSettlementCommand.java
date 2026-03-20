@@ -3,7 +3,7 @@
 // --------------------------------------------------------
 package com.mycompany.app;
 
-public class BuildSettlementCommand implements HumanCommand {
+public class BuildSettlementCommand extends AbstractUndoableCommand {
     private final int nodeId;
 
     public BuildSettlementCommand(int nodeId) {
@@ -15,7 +15,7 @@ public class BuildSettlementCommand implements HumanCommand {
     }
 
     @Override
-    public boolean execute(Game game, Player player) {
+    protected boolean executeCommand(Game game, Player player) {
         if (game.phase() == Phase.SETUP) {
             game.systemMessage("Use setup prompts to place your opening settlement.");
             return false;

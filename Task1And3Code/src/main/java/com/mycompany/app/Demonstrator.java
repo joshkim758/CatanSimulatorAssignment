@@ -39,7 +39,7 @@ public class Demonstrator {
         //this is used by the human player.
         CommandLineUI ui = new ConsoleUI();
         CommandParser parser = new CommandParser();
-        //assign one human controller and three random agent controllers
+        //assign one human controller and three machine agent controllers (changed from ranodom agent to machine agent since R3.2 implements intelligencce)
         PlayerController[] controllers = new PlayerController[] {new HumanController(parser, ui), new RandomAgentController(), new RandomAgentController(), new RandomAgentController()};
 
         //ceate the JSON writer used to export the current game state

@@ -3,7 +3,7 @@
 // --------------------------------------------------------
 package com.mycompany.app;
 
-public class BuildRoadCommand implements HumanCommand {
+public class BuildRoadCommand extends AbstractUndoableCommand {
     private final int fromNodeId;
     private final int toNodeId;
 
@@ -22,7 +22,7 @@ public class BuildRoadCommand implements HumanCommand {
     }
 
     @Override
-    public boolean execute(Game game, Player player) {
+    protected boolean executeCommand(Game game, Player player) {
 
 
         if (game.phase() == Phase.SETUP) {

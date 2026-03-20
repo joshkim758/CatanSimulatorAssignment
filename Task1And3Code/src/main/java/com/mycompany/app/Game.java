@@ -412,7 +412,73 @@ public class Game {
         return true;
     }
 
+    //additional stuff for r3.1
 
+    public GameSnapshot createSnapshot() {
+    GameSnapshot.PlayerState[] playerStates = new GameSnapshot.PlayerState[players.length];
+    for (int i = 0; i < players.length; i++) {
+        Player player = players[i];
+        playerStates[i] = new GameSnapshot.PlayerState(
+                player.handSummary(),
+                player.getRoadsLeft(),
+                player.getSettlementsLeft(),
+                player.getCitiesLeft(),
+                player.vp()
+        );
+    }
+
+    Node[] boardNodes = board.getNodes();
+    int[] nodeOwners = new int[boardNodes.length];
+    BuildingType[] nodeBuildings = new BuildingType[boardNodes.length];
+    for (int i = 0; i < boardNodes.length; i++) {
+        nodeOwners[i] = boardNodes[i].getOwner();
+        nodeBuildings[i] = boardNodes[i].getBuilding();
+    }
+
+    List<Edge> boardEdges = board.getEdges();
+    int[] edgeOwners = new int[boardEdges.size()];
+    for (int i = 0; i < boardEdges.size(); i++) {
+        edgeOwners[i] = boardEdges.get(i).getRoadOwner();
+    }
+
+    return new GameSnapshot(
+            playerStates,
+            bank.countsSnapshot(),
+            nodeOwners,
+            nodeBuildings,
+            edgeOwners,
+            board.robberTileId(),
+            turns.currentPlayerIndex(),
+            turns.phase(),
+            turns.stage(),
+            turnId
+    );
+}
+
+public void restoreSnapshot(GameSnapshot snapshot) {
+    GameSnapshot.PlayerState[] playerStates = snapshot.playerStates();
+    for (int i = 0; i < players.length; i++) {
+        GameSnapshot.PlayerState state = playerStates[i];
+        players[i].restoreState(
+                state.hand(),
+                state.roadsLeft(),
+                state.settlementsLeft(),
+                state.citiesLeft(),
+                state.victoryPoints()
+        );
+    }
+
+    bank.restoreCounts(snapshot.bankCounts());
+    board.restoreState(
+            snapshot.nodeOwners(),
+            snapshot.nodeBuildings(),
+            snapshot.edgeOwners(),
+            snapshot.robberTileId()
+    );
+    turns.restoreState(snapshot.currentPlayerIndex(), snapshot.phase(), snapshot.stage());
+    turnId = snapshot.turnId();
+}
+    
     public void writeGameState() {
         if (stateWriter != null) {
             stateWriter.write(this);

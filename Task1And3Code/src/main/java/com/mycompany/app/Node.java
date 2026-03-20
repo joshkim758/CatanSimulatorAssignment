@@ -21,6 +21,11 @@ public class Node {
         this.building = building;
     }
 
+    public void setState(int owner, BuildingType building) {
+        this.owner = owner;
+        this.building = building;
+    }
+
     public int getId() {
         return id;
     }

@@ -31,4 +31,10 @@ public class TurnManager {
     public void setStage(TurnStage stage) {
         this.stage = stage;
     }
+
+    public void restoreState(int current, Phase phase, TurnStage stage) {
+        this.current = current;
+        this.phase = phase;
+        this.stage = stage;
+    }
 }

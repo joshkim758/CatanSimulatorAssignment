@@ -43,7 +43,16 @@ public class Bank {
         counts.put(r, counts.getOrDefault(r, 0) + n);
     }
 
+    public Map<Resource, Integer> countsSnapshot() {
+        return new EnumMap<>(counts);
+    }
 
+    public void restoreCounts(Map<Resource, Integer> snapshot) {
+        counts.clear();
+        for (Resource resource : Resource.values()) {
+            counts.put(resource, snapshot.getOrDefault(resource, 0));
+        }
+    }
     
     public void receiveAll(Map<Resource, Integer> cards) {
         for (Map.Entry<Resource, Integer> entry : cards.entrySet()) {

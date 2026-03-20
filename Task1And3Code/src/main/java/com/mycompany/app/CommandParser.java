@@ -9,11 +9,17 @@ public class CommandParser {
     private static final Pattern ROLL = Pattern.compile("^\\s*roll\\s*$", Pattern.CASE_INSENSITIVE);
     private static final Pattern GO = Pattern.compile("^\\s*go\\s*$", Pattern.CASE_INSENSITIVE);
     private static final Pattern LIST = Pattern.compile("^\\s*list\\s*$", Pattern.CASE_INSENSITIVE);
+    private static final Pattern UNDO = Pattern.compile("^\\s*undo\\s*$", Pattern.CASE_INSENSITIVE);
+    private static final Pattern REDO = Pattern.compile("^\\s*redo\\s*$", Pattern.CASE_INSENSITIVE);
     private static final Pattern BUILD_SETTLEMENT = Pattern.compile("^\\s*build\\s+settlement\\s+\\[?\\s*(\\d+)\\s*]?\\s*$", Pattern.CASE_INSENSITIVE);
     private static final Pattern BUILD_CITY = Pattern.compile("^\\s*build\\s+city\\s+\\[?\\s*(\\d+)\\s*]?\\s*$", Pattern.CASE_INSENSITIVE);
     private static final Pattern BUILD_ROAD = Pattern.compile("^\\s*build\\s+road\\s+\\[?\\s*(\\d+)\\s*,\\s*(\\d+)\\s*]?\\s*$", Pattern.CASE_INSENSITIVE);
 
     public HumanCommand parse(String raw) {
+        return parse(raw, null);
+    }
+
+    public HumanCommand parse(String raw, CommandHistory history) {
         if (raw == null) {
             throw new IllegalArgumentException("Command cannot be null.");
         }
@@ -26,6 +32,18 @@ public class CommandParser {
         }
         if (LIST.matcher(raw).matches()) {
             return new ListCommand();
+        }
+        if (UNDO.matcher(raw).matches()) {
+            if (history == null) {
+                throw new IllegalArgumentException("Undo is not available right now.");
+            }
+            return new UndoCommand(history);
+        }
+        if (REDO.matcher(raw).matches()) {
+            if (history == null) {
+                throw new IllegalArgumentException("Redo is not available right now.");
+            }
+            return new RedoCommand(history);
         }
 
         matcher = BUILD_SETTLEMENT.matcher(raw);

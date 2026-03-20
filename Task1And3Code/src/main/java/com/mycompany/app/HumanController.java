@@ -6,10 +6,12 @@ package com.mycompany.app;
 public class HumanController implements PlayerController {
     private final CommandParser parser;
     private final CommandLineUI ui;
+    private final CommandHistory history;
 
     public HumanController(CommandParser parser, CommandLineUI ui) {
         this.parser = parser;
         this.ui = ui;
+        this.history = new CommandHistory();
     }
 
     public CommandParser parser() {
@@ -20,16 +22,27 @@ public class HumanController implements PlayerController {
         return ui;
     }
 
+    public CommandHistory history() {
+        return history;
+    }
+
     @Override
     public void takeTurn(Game game, Player player) {
-        ui.printLine("Human turn for P" + player.id() + ". Commands: Roll, List, Build ..., Go");
+        history.clear();
+        ui.printLine("Human turn for P" + player.id() + ". Commands: Roll, List, Build ..., Undo, Redo, Go");
         while (true) {
             ui.printLine("P" + player.id() + "> ");
             String raw = ui.readLine();
             try {
-                HumanCommand command = parser.parse(raw);
+                HumanCommand command = parser.parse(raw, history);
                 boolean success = command.execute(game, player);
+
+                if (success && command instanceof UndoableCommand) {
+                    history.record((UndoableCommand) command);
+                }
+
                 if (success && command.endsTurn()) {
+                    history.clear();
                     break;
                 }
             } catch (IllegalArgumentException ex) {
